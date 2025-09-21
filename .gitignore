@@ -1,0 +1,48 @@
+# Ignore dataset folders
+C2A_Dataset/
+Coco_annotation_pose/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.env
+venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Results and checkpoints
+runs/
+prep_outputs/
+models.zip
+checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Visual Studio Code
+.vscode/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Ignore large archives
+*.zip
+*.tar.gz
+*.tar
+
+# Ignore data lists and temporary YAMLs if created in working dir
+/kaggle/working/
+*.yaml
+*.txt
