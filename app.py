@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'static/uploads'
 OUTPUT_FOLDER = 'static/outputs'
-CHECKPOINT_PATH = 'checkpoints/kfold_2/best_epoch10.pth'
+CHECKPOINT_PATH = './checkpoints/kfold_2/best_epoch10.pth'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 
