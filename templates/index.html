@@ -1,80 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Compare YOLO Models</title>
   <style>
-  body {
-    font-family: "Segoe UI", sans-serif;
-    background-color: #181a20;
-    margin: 0;
-    padding: 30px;
-    color: #e0e0e0;
-  }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #181a20;
+      margin: 0;
+      padding: 30px;
+      color: #e0e0e0;
+    }
 
-  h1, h2, h3, h4 {
-    text-align: center;
-  }
+    h1,
+    h2,
+    h3,
+    h4 {
+      text-align: center;
+    }
 
-  form {
-    text-align: center;
-    margin-bottom: 40px;
-  }
+    form {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-  input[type="file"] {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    margin-right: 10px;
-    background: #23262f;
-    color: #e0e0e0;
-  }
+    input[type="file"] {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      margin-right: 10px;
+      background: #23262f;
+      color: #e0e0e0;
+    }
 
-  button {
-    padding: 10px 20px;
-    background-color: #2d8cf0;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 2px 8px rgba(45,140,240,0.15);
-    transition: background 0.2s;
-  }
+    button {
+      padding: 10px 20px;
+      background-color: #2d8cf0;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(45, 140, 240, 0.15);
+      transition: background 0.2s;
+    }
 
-  button:hover {
-    background-color: #1e6bb8;
-  }
+    button:hover {
+      background-color: #1e6bb8;
+    }
 
-  .results-container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+    .results-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-  .image-group {
-    background: #23262f;
-    padding: 20px;
-    margin-bottom: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.4);
-  }
+    .image-group {
+      background: #23262f;
+      padding: 20px;
+      margin-bottom: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    }
 
-  .model-result {
-    display: inline-block;
-    margin-right: 20px;
-    text-align: center;
-  }
+    .model-result {
+      display: inline-block;
+      margin-right: 20px;
+      text-align: center;
+    }
 
-  img {
-    max-width: 400px;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(45,140,240,0.25);
-    margin-top: 10px;
-    border: 2px solid #2d8cf0;
-    background: #23262f;
-  }
-</style>
+    img {
+      max-width: 400px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(45, 140, 240, 0.25);
+      margin-top: 10px;
+      border: 2px solid #2d8cf0;
+      background: #23262f;
+    }
+  </style>
 </head>
+
 <body>
   <h1>Faster R-CNN Detection Results</h1>
   <h3>Upload up to 5 images to see detection results</h3>
@@ -87,17 +92,38 @@
   {% if results %}
   <div class="results-container">
     {% for image in results %}
-      <div class="image-group">
-        <h3>{{ image.filename }}</h3>
-        <div class="model-result">
-          <h4>{{ image.model_name }}</h4>
-          <p><strong>People Detected:</strong> {{ image.count }}</p>
-          <p><strong>Avg Confidence:</strong> {{ '%.2f'|format(image.avg_confidence) }}</p>
-          <img src="{{ url_for('static', filename=image.output_image.split('static/')[-1]) }}" alt="Detection result">
-        </div>
+    <div class="image-group">
+      <h3>{{ image.filename }}</h3>
+
+      <!-- Detection Results -->
+      <div class="model-result">
+        <h4>{{ image.model_name }} - Detection Results</h4>
+        <p><strong>People Detected:</strong> {{ image.count }}</p>
+        <p><strong>Avg Confidence:</strong> {{ '%.2f'|format(image.avg_confidence) }}</p>
+        <img src="{{ url_for('static', filename=image.output_image.split('static/')[-1]) }}" alt="Detection result">
       </div>
+
+      <!-- Feature Maps Visualization -->
+      <div class="visualization-section" style="margin-top: 30px;">
+        <h4>Feature Maps (Layer1, Layer2, Layer3)</h4>
+        <p style="font-size: 14px; color: #aaa;">Shows internal feature representations extracted by the CNN backbone
+        </p>
+        <img src="{{ url_for('static', filename=image.feature_maps.split('static/')[-1]) }}" alt="Feature maps"
+          style="max-width: 100%; border: 2px solid #4caf50;">
+      </div>
+
+      <!-- Grad-CAM Visualization -->
+      <div class="visualization-section" style="margin-top: 30px;">
+        <h4>Grad-CAM Attention Maps (Layer1, Layer2, Layer3)</h4>
+        <p style="font-size: 14px; color: #aaa;">Highlights regions the model focuses on for detection at different
+          layers</p>
+        <img src="{{ url_for('static', filename=image.gradcam.split('static/')[-1]) }}" alt="Grad-CAM"
+          style="max-width: 100%; border: 2px solid #ff9800;">
+      </div>
+    </div>
     {% endfor %}
   </div>
   {% endif %}
 </body>
+
 </html>
