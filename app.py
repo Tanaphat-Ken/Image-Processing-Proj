@@ -273,7 +273,7 @@ def index():
 
         results_data = []
 
-        for file in uploaded_files[:5]:  # Limit to 5 images
+        for file in uploaded_files[:10]:  # Limit to 10 images
             filename = secure_filename(file.filename)
             if filename == '':
                 continue
@@ -282,7 +282,7 @@ def index():
             file.save(filepath)
 
             # Run prediction with Grad-CAM computation
-            boxes, scores, labels, image = predict_image(filepath, model, device, score_threshold=0.3, compute_gradcam=True)
+            boxes, scores, labels, image = predict_image(filepath, model, device, score_threshold=0.5, compute_gradcam=True)
             
             # Count detections (all are person class)
             count = len(boxes)

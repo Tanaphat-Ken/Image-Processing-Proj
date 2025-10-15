@@ -21,6 +21,7 @@ runs/
 prep_outputs/
 models.zip
 checkpoints/
+static/
 
 # OS
 .DS_Store
