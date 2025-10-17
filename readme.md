@@ -1,0 +1,1 @@
+Source Code ที่ใช้ในโปรเจคนี้สามารถดูได้ที่ File beta.ipynb และตัว App คือ File app.py ครับ
